@@ -1,0 +1,50 @@
+<!-- templates/posts/post_detail.html -->
+{% extends 'base.html' %}
+{% block title %}
+  Пост {{ about_post.text|slice:":30" }}
+{% endblock %}
+{% load thumbnail %}
+{% block content %}
+  <div class="row">
+    <aside class="col-12 col-md-3">
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+          Дата публикации: {{ about_post.pub_date|date:"d E Y" }}
+        </li>
+          <li class="list-group-item">
+            Группа: {{ about_post.group }}
+            {% if about_post.group %}
+              <a href="{% url 'posts:group_list' about_post.group.slug %}">
+                все записи группы
+              </a>
+            {% endif %}
+          </li>
+          <li class="list-group-item">
+            Автор: {{ about_post.author.get_full_name }}
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+          Всего постов автора:  <span >{{about_post.author.posts.count}}</span>
+        </li>
+        <li class="list-group-item">
+          <a href="{% url 'posts:profile' about_post.author %}">
+            все посты пользователя
+          </a>
+        </li>
+      </ul>
+    </aside>
+    <article class="col-12 col-md-9">
+      {% thumbnail about_post.image "960x339" crop="center" upscale=True as im %}
+        <img class="card-img my-2" src="{{ im.url }}">
+      {% endthumbnail %}
+      <p>
+       {{ about_post.text|linebreaksbr }}
+      </p>
+      {% if about_post.author == request.user %}
+        <a class="btn btn-primary" href="{% url 'posts:post_edit' about_post.id %}">
+          Редактировать запись
+        </a>
+      {% endif %}
+      {% include 'includes/comments.html' %}
+    </article>
+  </div>
+{% endblock %}

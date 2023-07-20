@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'suggestions.apps.SuggestionsConfig',
+    'about.apps.AboutConfig',
+    'core.apps.CoreConfig',
 
 ]
 
@@ -56,10 +58,13 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'improving_applications.urls'
 
+# my add
+TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [TEMPLATES_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
